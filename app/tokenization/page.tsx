@@ -2,6 +2,7 @@
 
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
+import Link from "next/link";
 import { GlassCard } from "@/components/shared/GlassCard";
 import { GradientText } from "@/components/shared/GradientText";
 import { Button } from "@/components/ui/button";
@@ -19,6 +20,7 @@ const mockAssets = [
         genre: "Pop",
         price: 50,
         roi: 12.5,
+        change24h: 2.5,
         funded: 75,
         image: "bg-gradient-to-br from-purple-500 to-blue-500",
     },
@@ -29,6 +31,7 @@ const mockAssets = [
         genre: "Electronic",
         price: 35,
         roi: 15.2,
+        change24h: -1.2,
         funded: 40,
         image: "bg-gradient-to-br from-cyan-500 to-blue-600",
     },
@@ -39,6 +42,7 @@ const mockAssets = [
         genre: "Indie",
         price: 25,
         roi: 8.5,
+        change24h: 0.8,
         funded: 90,
         image: "bg-gradient-to-br from-orange-400 to-red-500",
     },
@@ -49,6 +53,7 @@ const mockAssets = [
         genre: "Rock",
         price: 45,
         roi: 11.0,
+        change24h: 3.4,
         funded: 20,
         image: "bg-gradient-to-br from-gray-700 to-black",
     },
@@ -59,6 +64,7 @@ const mockAssets = [
         genre: "Jazz",
         price: 60,
         roi: 9.8,
+        change24h: -0.5,
         funded: 60,
         image: "bg-gradient-to-br from-yellow-600 to-yellow-800",
     },
@@ -69,6 +75,7 @@ const mockAssets = [
         genre: "House",
         price: 40,
         roi: 13.5,
+        change24h: 1.2,
         funded: 10,
         image: "bg-gradient-to-br from-pink-400 to-purple-500",
     },
@@ -110,60 +117,60 @@ export default function Tokenization() {
                 </div>
 
                 {/* Assets Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {mockAssets.map((asset) => (
-                        <GlassCard key={asset.id} hoverEffect className="group">
-                            <div className={`aspect-square rounded-lg ${asset.image} mb-4 relative overflow-hidden`}>
-                                <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors" />
-                                <button
-                                    onClick={() => setPlaying(playing === asset.id ? null : asset.id)}
-                                    className="absolute bottom-4 right-4 h-12 w-12 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center hover:bg-primary hover:scale-110 transition-all"
-                                >
-                                    {playing === asset.id ? <Pause fill="white" /> : <Play fill="white" className="ml-1" />}
-                                </button>
-                                <Badge className="absolute top-4 left-4 bg-black/50 backdrop-blur-md border-0">
-                                    {asset.genre}
-                                </Badge>
-                            </div>
-
-                            <div className="space-y-3">
-                                <div className="flex justify-between items-start">
-                                    <div>
-                                        <h3 className="font-bold text-lg leading-none mb-1">{asset.title}</h3>
-                                        <p className="text-sm text-muted-foreground">{asset.artist}</p>
-                                    </div>
-                                    <div className="text-right">
-                                        <p className="font-bold text-lg">${asset.price}</p>
-                                        <p className="text-xs text-muted-foreground">per token</p>
-                                    </div>
-                                </div>
-
-                                <div className="space-y-1">
-                                    <div className="flex justify-between text-sm">
-                                        <span className="text-muted-foreground">Funding Goal</span>
-                                        <span className="font-medium">{asset.funded}%</span>
-                                    </div>
-                                    <Progress value={asset.funded} className="h-2" />
-                                </div>
-
-                                <div className="grid grid-cols-2 gap-4 py-2">
-                                    <div className="bg-white/5 rounded-lg p-2 text-center">
-                                        <p className="text-xs text-muted-foreground">Proj. ROI</p>
-                                        <p className="font-bold text-green-400">{asset.roi}%</p>
-                                    </div>
-                                    <div className="bg-white/5 rounded-lg p-2 text-center">
-                                        <p className="text-xs text-muted-foreground">Term</p>
-                                        <p className="font-bold">Permanent</p>
-                                    </div>
-                                </div>
-
-                                <Button className="w-full bg-white/10 hover:bg-primary hover:text-white transition-colors">
-                                    View Details
-                                </Button>
-                            </div>
-                        </GlassCard>
-                    ))}
-                </div>
+                {/* Assets List */}
+                <GlassCard className="p-0 overflow-hidden">
+                    <div className="overflow-x-auto">
+                        <table className="w-full">
+                            <thead className="bg-white/5 border-b border-white/10">
+                                <tr>
+                                    <th className="text-left p-4 text-sm font-medium text-muted-foreground">Asset</th>
+                                    <th className="text-right p-4 text-sm font-medium text-muted-foreground">Price</th>
+                                    <th className="text-right p-4 text-sm font-medium text-muted-foreground">Movement</th>
+                                    <th className="text-right p-4 text-sm font-medium text-muted-foreground">ROI</th>
+                                    <th className="text-right p-4 text-sm font-medium text-muted-foreground">Funded</th>
+                                    <th className="p-4"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {mockAssets.map((asset) => (
+                                    <tr key={asset.id} className="border-b border-white/5 hover:bg-white/5 transition-colors">
+                                        <td className="p-4">
+                                            <div className="flex items-center gap-3">
+                                                <div className={`h-10 w-10 rounded-full ${asset.image} flex items-center justify-center text-xs font-bold`}>
+                                                    {asset.title[0]}
+                                                </div>
+                                                <div>
+                                                    <div className="font-bold">{asset.title}</div>
+                                                    <div className="text-xs text-muted-foreground">{asset.artist}</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td className="p-4 text-right font-medium">
+                                            ${asset.price.toFixed(2)}
+                                        </td>
+                                        <td className={`p-4 text-right font-medium ${asset.change24h >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                                            {asset.change24h >= 0 ? '+' : ''}{asset.change24h}%
+                                        </td>
+                                        <td className="p-4 text-right text-green-400 font-medium">
+                                            {asset.roi}%
+                                        </td>
+                                        <td className="p-4 text-right">
+                                            <div className="flex items-center justify-end gap-2">
+                                                <span className="text-sm font-medium">{asset.funded}%</span>
+                                                <Progress value={asset.funded} className="h-1.5 w-16" />
+                                            </div>
+                                        </td>
+                                        <td className="p-4 text-right">
+                                            <Link href={`/tokenization/${asset.id}`}>
+                                                <Button variant="ghost" size="sm">Detail</Button>
+                                            </Link>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                </GlassCard>
             </main>
             <Footer />
         </div>

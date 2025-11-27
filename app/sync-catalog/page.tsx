@@ -10,9 +10,9 @@ export default function SyncCatalog() {
         <div className="min-h-screen flex flex-col bg-background text-foreground">
             <main className="flex-grow">
                 {/* Header Section */}
-                <section className="pt-32 pb-10 px-4 text-center relative overflow-hidden">
+                <section className="pt-32 pb-10 text-center relative overflow-hidden">
                     <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[500px] bg-primary/20 blur-[120px] rounded-full pointer-events-none" />
-                    <div className="relative z-10">
+                    <div className="relative z-10 container mx-auto px-4">
                         <h1 className="text-4xl md:text-6xl font-bold mb-6">
                             Sync <GradientText>Catalog</GradientText>
                         </h1>
@@ -24,7 +24,7 @@ export default function SyncCatalog() {
                 </section>
 
                 {/* Hall of Fame Carousel */}
-                <section className="mb-10">
+                <section className="mb-10 container mx-auto px-4">
                     <HallOfFameCarousel />
                 </section>
 
