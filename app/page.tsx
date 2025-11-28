@@ -9,6 +9,15 @@ import { ArrowRight, Music, Coins, Users, TrendingUp } from "lucide-react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+
+import { ShowcaseGallery } from "@/components/showcase/ShowcaseGallery";
+
 export default function Home() {
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground overflow-hidden">
@@ -42,6 +51,9 @@ export default function Home() {
             </motion.div>
           </div>
         </section>
+
+        {/* Showcase Section */}
+        <ShowcaseGallery />
 
         {/* Features Section */}
         <section className="py-20 bg-black/20">
@@ -104,6 +116,57 @@ export default function Home() {
                   </p>
                 </GlassCard>
               </motion.div>
+            </div>
+          </div>
+        </section>
+
+        {/* FAQ Section */}
+        <section className="py-20">
+          <div className="container mx-auto px-4">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                Frequently Asked <GradientText>Questions</GradientText>
+              </h2>
+              <p className="text-muted-foreground max-w-2xl mx-auto">
+                Everything you need to know about Upbeats, tokenization, and lending.
+              </p>
+            </div>
+
+            <div className="max-w-3xl mx-auto">
+              <GlassCard>
+                <Accordion type="single" collapsible className="w-full">
+                  <AccordionItem value="item-1">
+                    <AccordionTrigger>What is Upbeats?</AccordionTrigger>
+                    <AccordionContent>
+                      Upbeats is a blockchain-based platform that connects independent artists with fans and investors. It allows artists to tokenize their master recordings to raise funds and provides instant liquidity through DeFi lending.
+                    </AccordionContent>
+                  </AccordionItem>
+                  <AccordionItem value="item-2">
+                    <AccordionTrigger>How does tokenization work?</AccordionTrigger>
+                    <AccordionContent>
+                      Tokenization involves creating digital assets (tokens) that represent a share of the ownership or future revenue of a song. Fans can buy these tokens to support the artist and earn a portion of the streaming royalties.
+                    </AccordionContent>
+                  </AccordionItem>
+                  <AccordionItem value="item-3">
+                    <AccordionTrigger>Is my investment safe?</AccordionTrigger>
+                    <AccordionContent>
+                      All transactions are recorded on the blockchain for transparency. However, like all investments, there are risks involved. We recommend diversifying your portfolio and doing your own research.
+                    </AccordionContent>
+                  </AccordionItem>
+                  <AccordionItem value="item-4">
+                    <AccordionTrigger>How do I apply for a loan?</AccordionTrigger>
+                    <AccordionContent>
+                      Artists can apply for a loan by connecting their streaming accounts and wallet. Our system analyzes your streaming history to determine your borrowing limit. If approved, you can use your future revenue as collateral to get instant funds.
+                    </AccordionContent>
+                  </AccordionItem>
+                  <AccordionItem value="item-5">
+                    <AccordionTrigger>What are the fees?</AccordionTrigger>
+                    <AccordionContent>
+                      Upbeats charges a small platform fee on token sales and loan originations. Specific fee structures are detailed in the terms of service for each transaction.
+                    </AccordionContent>
+                  </AccordionItem>
+                </Accordion>
+              </GlassCard>
             </div>
           </div>
         </section>

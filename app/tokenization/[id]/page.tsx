@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Play, Pause, ArrowLeft, Share2, Heart, Clock, DollarSign, TrendingUp, Users } from "lucide-react";
-import { useState, use } from "react";
+import { useState, use, useEffect } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 
@@ -28,12 +28,12 @@ const mockAssets = [
         totalTokens: 10000,
         availableTokens: 2500,
         streamingHistory: [
-            { month: "Jan", streams: 12000 },
-            { month: "Feb", streams: 15000 },
-            { month: "Mar", streams: 18000 },
-            { month: "Apr", streams: 22000 },
-            { month: "May", streams: 25000 },
-            { month: "Jun", streams: 30000 },
+            { month: "Jan", streams: 12000, spotify: 6000, youtube: 4000, apple: 2000 },
+            { month: "Feb", streams: 15000, spotify: 7500, youtube: 5000, apple: 2500 },
+            { month: "Mar", streams: 18000, spotify: 9000, youtube: 6000, apple: 3000 },
+            { month: "Apr", streams: 22000, spotify: 11000, youtube: 7000, apple: 4000 },
+            { month: "May", streams: 25000, spotify: 12500, youtube: 8000, apple: 4500 },
+            { month: "Jun", streams: 30000, spotify: 15000, youtube: 10000, apple: 5000 },
         ]
     },
     {
@@ -75,6 +75,14 @@ export default function TokenDetail({ params }: { params: Promise<{ id: string }
     const id = parseInt(resolvedParams.id);
     const asset = mockAssets.find(a => a.id === id) || mockAssets[0]; // Fallback to first asset if not found
     const [playing, setPlaying] = useState(false);
+    const [progress, setProgress] = useState(0);
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setProgress(asset.funded);
+        }, 500);
+        return () => clearTimeout(timer);
+    }, [asset.funded]);
 
     return (
         <div className="min-h-screen flex flex-col bg-background text-foreground">
@@ -148,7 +156,7 @@ export default function TokenDetail({ params }: { params: Promise<{ id: string }
                                         <TrendingUp size={14} className="mr-1" /> +{asset.roi}% ROI
                                     </Badge>
                                     <Badge variant="secondary" className="bg-blue-500/20 text-blue-400 hover:bg-blue-500/30">
-                                        <Users size={14} className="mr-1" /> {Math.floor(Math.random() * 500) + 100} Investors
+                                        <Users size={14} className="mr-1" /> {asset.id * 123 + 50} Investors
                                     </Badge>
                                 </div>
                             </div>
@@ -159,10 +167,10 @@ export default function TokenDetail({ params }: { params: Promise<{ id: string }
                                         <span className="text-muted-foreground">Funding Progress</span>
                                         <span className="font-bold">{asset.funded}%</span>
                                     </div>
-                                    <Progress value={asset.funded} className="h-3" />
+                                    <Progress value={progress} className="h-3" />
                                     <div className="flex justify-between text-xs text-muted-foreground mt-2">
-                                        <span>${(asset.totalTokens * asset.price * asset.funded / 100).toLocaleString()} raised</span>
-                                        <span>Goal: ${(asset.totalTokens * asset.price).toLocaleString()}</span>
+                                        <span>${(asset.totalTokens * asset.price * asset.funded / 100).toLocaleString('en-US')} raised</span>
+                                        <span>Goal: ${(asset.totalTokens * asset.price).toLocaleString('en-US')}</span>
                                     </div>
                                 </div>
 
@@ -172,7 +180,7 @@ export default function TokenDetail({ params }: { params: Promise<{ id: string }
                                             <DollarSign size={16} />
                                             <span className="text-sm">Market Cap</span>
                                         </div>
-                                        <p className="text-xl font-bold">${(asset.totalTokens * asset.price).toLocaleString()}</p>
+                                        <p className="text-xl font-bold">${(asset.totalTokens * asset.price).toLocaleString('en-US')}</p>
                                     </div>
                                     <div className="bg-white/5 rounded-xl p-4">
                                         <div className="flex items-center gap-2 text-muted-foreground mb-2">
@@ -208,17 +216,49 @@ export default function TokenDetail({ params }: { params: Promise<{ id: string }
                         </GlassCard>
 
                         <GlassCard>
-                            <h3 className="font-bold mb-4">Streaming Performance</h3>
+                            <div className="flex justify-between items-center mb-6">
+                                <h3 className="font-bold">Streaming Performance</h3>
+                                <div className="flex gap-4 text-xs">
+                                    <div className="flex items-center gap-1">
+                                        <div className="w-2 h-2 rounded-full bg-[#1DB954]" /> Spotify
+                                    </div>
+                                    <div className="flex items-center gap-1">
+                                        <div className="w-2 h-2 rounded-full bg-[#FF0000]" /> YouTube
+                                    </div>
+                                    <div className="flex items-center gap-1">
+                                        <div className="w-2 h-2 rounded-full bg-[#FFFFFF]" /> Apple Music
+                                    </div>
+                                </div>
+                            </div>
+
                             <div className="h-48 flex items-end justify-between gap-2 px-2">
                                 {asset.streamingHistory.length > 0 ? (
                                     asset.streamingHistory.map((data, i) => (
-                                        <div key={i} className="flex flex-col items-center gap-2 flex-1 group">
-                                            <div
-                                                className="w-full bg-primary/20 rounded-t-sm group-hover:bg-primary/40 transition-colors relative"
-                                                style={{ height: `${(data.streams / 30000) * 100}%` }}
-                                            >
-                                                <div className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black/80 text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-                                                    {data.streams.toLocaleString()}
+                                        <div key={i} className="flex flex-col items-center gap-2 flex-1">
+                                            <div className="w-full flex justify-center items-end gap-1 h-full">
+                                                {/* Spotify Bar */}
+                                                <div className="w-2 md:w-4 bg-[#1DB954]/80 hover:bg-[#1DB954] rounded-t-sm transition-all relative group"
+                                                    style={{ height: `${Math.min((data.spotify || 0) / 15000 * 100, 100)}%` }}
+                                                >
+                                                    <div className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black/80 text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-10">
+                                                        {data.spotify?.toLocaleString('en-US')}
+                                                    </div>
+                                                </div>
+                                                {/* YouTube Bar */}
+                                                <div className="w-2 md:w-4 bg-[#FF0000]/80 hover:bg-[#FF0000] rounded-t-sm transition-all relative group"
+                                                    style={{ height: `${Math.min((data.youtube || 0) / 15000 * 100, 100)}%` }}
+                                                >
+                                                    <div className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black/80 text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-10">
+                                                        {data.youtube?.toLocaleString('en-US')}
+                                                    </div>
+                                                </div>
+                                                {/* Apple Music Bar */}
+                                                <div className="w-2 md:w-4 bg-[#FFFFFF]/80 hover:bg-[#FFFFFF] rounded-t-sm transition-all relative group"
+                                                    style={{ height: `${Math.min((data.apple || 0) / 15000 * 100, 100)}%` }}
+                                                >
+                                                    <div className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black/80 text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-10">
+                                                        {data.apple?.toLocaleString('en-US')}
+                                                    </div>
                                                 </div>
                                             </div>
                                             <span className="text-xs text-muted-foreground">{data.month}</span>
