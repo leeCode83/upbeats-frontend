@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { GradientText } from "@/components/shared/GradientText";
 import { cn } from "@/lib/utils";
 import { Menu, X, ChevronDown } from "lucide-react";
@@ -66,7 +67,7 @@ export function Navbar() {
                         if (item.items) {
                             return (
                                 <DropdownMenu key={item.name}>
-                                    <DropdownMenuTrigger className={cn(
+                                    <DropdownMenuTrigger suppressHydrationWarning={true} className={cn(
                                         "flex items-center px-4 py-2 text-sm font-medium rounded-full transition-all duration-200 focus:outline-none",
                                         pathname.startsWith(item.href)
                                             ? "bg-white/10 text-white shadow-[0_0_20px_rgba(255,255,255,0.1)]"
@@ -114,13 +115,112 @@ export function Navbar() {
                 {/* Auth Buttons */}
                 <div className="hidden md:flex items-center space-x-3 shrink-0">
                     <Link href="/dashboard">
-                        <Button variant="ghost" className="rounded-full text-muted-foreground hover:text-white hover:bg-white/5">
+                        <Button suppressHydrationWarning={true} variant="ghost" className="rounded-full text-muted-foreground hover:text-white hover:bg-white/5">
                             Dashboard
                         </Button>
                     </Link>
-                    <Button className="rounded-full bg-primary hover:bg-primary/90 text-white shadow-lg shadow-primary/20 px-6">
-                        Connect Wallet
-                    </Button>
+                    <ConnectButton.Custom>
+                        {({
+                            account,
+                            chain,
+                            openAccountModal,
+                            openChainModal,
+                            openConnectModal,
+                            authenticationStatus,
+                            mounted,
+                        }) => {
+                            const ready = mounted && authenticationStatus !== 'loading';
+                            const connected =
+                                ready &&
+                                account &&
+                                chain &&
+                                (!authenticationStatus ||
+                                    authenticationStatus === 'authenticated');
+
+                            return (
+                                <div
+                                    {...(!ready && {
+                                        'aria-hidden': true,
+                                        'style': {
+                                            opacity: 0,
+                                            pointerEvents: 'none',
+                                            userSelect: 'none',
+                                        },
+                                    })}
+                                >
+                                    {(() => {
+                                        if (!connected) {
+                                            return (
+                                                <Button
+                                                    suppressHydrationWarning={true}
+                                                    onClick={openConnectModal}
+                                                    className="rounded-full bg-primary hover:bg-primary/90 text-primary-foreground font-medium shadow-[0_0_20px_rgba(255,255,255,0.1)]"
+                                                >
+                                                    Connect Wallet
+                                                </Button>
+                                            );
+                                        }
+
+                                        if (chain.unsupported) {
+                                            return (
+                                                <Button
+                                                    suppressHydrationWarning={true}
+                                                    onClick={openChainModal}
+                                                    variant="destructive"
+                                                    className="rounded-full"
+                                                >
+                                                    Wrong network
+                                                </Button>
+                                            );
+                                        }
+
+                                        return (
+                                            <div className="flex items-center gap-2">
+                                                <Button
+                                                    suppressHydrationWarning={true}
+                                                    onClick={openChainModal}
+                                                    variant="outline"
+                                                    className="rounded-full border-white/10 bg-white/5 hover:bg-white/10 text-white hidden lg:flex items-center gap-2 h-9"
+                                                >
+                                                    {chain.hasIcon && (
+                                                        <div
+                                                            style={{
+                                                                background: chain.iconBackground,
+                                                                width: 16,
+                                                                height: 16,
+                                                                borderRadius: 999,
+                                                                overflow: 'hidden',
+                                                            }}
+                                                        >
+                                                            {chain.iconUrl && (
+                                                                <img
+                                                                    alt={chain.name ?? 'Chain icon'}
+                                                                    src={chain.iconUrl}
+                                                                    style={{ width: 16, height: 16 }}
+                                                                />
+                                                            )}
+                                                        </div>
+                                                    )}
+                                                    {chain.name}
+                                                </Button>
+
+                                                <Button
+                                                    suppressHydrationWarning={true}
+                                                    onClick={openAccountModal}
+                                                    className="rounded-full bg-white/10 hover:bg-white/20 text-white border border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] h-9"
+                                                >
+                                                    {account.displayName}
+                                                    {account.displayBalance
+                                                        ? ` (${account.displayBalance})`
+                                                        : ''}
+                                                </Button>
+                                            </div>
+                                        );
+                                    })()}
+                                </div>
+                            );
+                        }}
+                    </ConnectButton.Custom>
                 </div>
 
                 {/* Mobile Menu Toggle */}
@@ -192,10 +292,10 @@ export function Navbar() {
                             );
                         })}
                         <div className="pt-4 flex flex-col space-y-3">
-                            <Button variant="ghost" className="w-full justify-start rounded-xl hover:bg-white/5">
+                            <Button suppressHydrationWarning={true} variant="ghost" className="w-full justify-start rounded-xl hover:bg-white/5">
                                 Log in
                             </Button>
-                            <Button className="w-full rounded-xl bg-primary hover:bg-primary/90">
+                            <Button suppressHydrationWarning={true} className="w-full rounded-xl bg-primary hover:bg-primary/90">
                                 Sign up
                             </Button>
                         </div>
