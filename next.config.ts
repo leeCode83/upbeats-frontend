@@ -9,6 +9,7 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  serverExternalPackages: ["pino", "pino-pretty", "lokijs", "encoding", "thread-stream"],
 };
 
 export default nextConfig;
