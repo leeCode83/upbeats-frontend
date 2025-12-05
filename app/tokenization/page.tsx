@@ -22,7 +22,7 @@ const mockAssets = [
         roi: 12.5,
         change24h: 2.5,
         funded: 75,
-        image: "bg-gradient-to-br from-purple-500 to-blue-500",
+        image: "bg-gradient-to-br from-purple-500 to-pink-500",
     },
     {
         id: 2,
@@ -33,7 +33,7 @@ const mockAssets = [
         roi: 15.2,
         change24h: -1.2,
         funded: 40,
-        image: "bg-gradient-to-br from-cyan-500 to-blue-600",
+        image: "bg-gradient-to-br from-fuchsia-600 to-purple-600",
     },
     {
         id: 3,
@@ -44,7 +44,7 @@ const mockAssets = [
         roi: 8.5,
         change24h: 0.8,
         funded: 90,
-        image: "bg-gradient-to-br from-orange-400 to-red-500",
+        image: "bg-gradient-to-br from-pink-500 to-rose-500",
     },
     {
         id: 4,
@@ -55,7 +55,7 @@ const mockAssets = [
         roi: 11.0,
         change24h: 3.4,
         funded: 20,
-        image: "bg-gradient-to-br from-gray-700 to-black",
+        image: "bg-gradient-to-br from-purple-900 to-fuchsia-900",
     },
     {
         id: 5,
@@ -66,7 +66,7 @@ const mockAssets = [
         roi: 9.8,
         change24h: -0.5,
         funded: 60,
-        image: "bg-gradient-to-br from-yellow-600 to-yellow-800",
+        image: "bg-gradient-to-br from-rose-400 to-pink-600",
     },
     {
         id: 6,
@@ -77,7 +77,7 @@ const mockAssets = [
         roi: 13.5,
         change24h: 1.2,
         funded: 10,
-        image: "bg-gradient-to-br from-pink-400 to-purple-500",
+        image: "bg-gradient-to-br from-purple-400 to-pink-300",
     },
 ];
 

@@ -7,9 +7,9 @@ import { GlassCard } from "@/components/shared/GlassCard";
 import { GradientText } from "@/components/shared/GradientText";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Progress } from "@/components/ui/progress";
+
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ArrowUpRight, DollarSign, Music, Wallet, TrendingUp } from "lucide-react";
+import { ArrowUpRight, DollarSign, Music, Wallet } from "lucide-react";
 
 export default function Dashboard() {
     return (
@@ -25,9 +25,7 @@ export default function Dashboard() {
                         <p className="text-muted-foreground">Here's what's happening with your portfolio today.</p>
                     </div>
                     <div className="flex gap-3">
-                        <Link href="/lending">
-                            <Button variant="outline" className="border-white/10">Go to Lending</Button>
-                        </Link>
+
                         <Button variant="outline" className="border-white/10">Withdraw</Button>
                         <Button className="bg-primary hover:bg-primary/90">Deposit Funds</Button>
                     </div>
@@ -74,25 +72,14 @@ export default function Dashboard() {
                         <h3 className="text-2xl font-bold">$450.25</h3>
                     </GlassCard>
 
-                    <GlassCard>
-                        <div className="flex justify-between items-start mb-4">
-                            <div className="p-2 bg-purple-500/20 rounded-lg text-purple-400">
-                                <TrendingUp size={20} />
-                            </div>
-                            <span className="text-xs font-medium text-muted-foreground">
-                                Active
-                            </span>
-                        </div>
-                        <p className="text-sm text-muted-foreground mb-1">Active Loans</p>
-                        <h3 className="text-2xl font-bold">1</h3>
-                    </GlassCard>
+
                 </div>
 
                 {/* Main Content Tabs */}
                 <Tabs defaultValue="portfolio" className="space-y-6">
                     <TabsList className="bg-white/5 border border-white/10 p-1">
                         <TabsTrigger value="portfolio">My Portfolio</TabsTrigger>
-                        <TabsTrigger value="loans">Loans</TabsTrigger>
+
                         <TabsTrigger value="activity">Activity</TabsTrigger>
                     </TabsList>
 
@@ -125,7 +112,7 @@ export default function Dashboard() {
                                                 price: 50.00,
                                                 marketCap: 500000,
                                                 change24h: 12.5,
-                                                image: "bg-gradient-to-br from-purple-500 to-blue-500"
+                                                image: "bg-gradient-to-br from-purple-500 to-pink-500"
                                             },
                                             {
                                                 id: 2,
@@ -134,7 +121,7 @@ export default function Dashboard() {
                                                 price: 35.00,
                                                 marketCap: 350000,
                                                 change24h: -2.4,
-                                                image: "bg-gradient-to-br from-cyan-500 to-blue-600"
+                                                image: "bg-gradient-to-br from-fuchsia-600 to-purple-600"
                                             },
                                             {
                                                 id: 3,
@@ -143,7 +130,7 @@ export default function Dashboard() {
                                                 price: 25.00,
                                                 marketCap: 250000,
                                                 change24h: 5.8,
-                                                image: "bg-gradient-to-br from-orange-400 to-red-500"
+                                                image: "bg-gradient-to-br from-pink-500 to-rose-500"
                                             },
                                             {
                                                 id: 4,
@@ -152,7 +139,7 @@ export default function Dashboard() {
                                                 price: 42.50,
                                                 marketCap: 425000,
                                                 change24h: 8.2,
-                                                image: "bg-gradient-to-br from-yellow-400 to-orange-500"
+                                                image: "bg-gradient-to-br from-purple-400 to-pink-400"
                                             },
                                             {
                                                 id: 5,
@@ -161,7 +148,7 @@ export default function Dashboard() {
                                                 price: 60.00,
                                                 marketCap: 600000,
                                                 change24h: 1.5,
-                                                image: "bg-gradient-to-br from-indigo-500 to-purple-600"
+                                                image: "bg-gradient-to-br from-rose-400 to-pink-600"
                                             },
                                             {
                                                 id: 6,
@@ -170,7 +157,7 @@ export default function Dashboard() {
                                                 price: 18.75,
                                                 marketCap: 187500,
                                                 change24h: -0.8,
-                                                image: "bg-gradient-to-br from-green-400 to-teal-500"
+                                                image: "bg-gradient-to-br from-purple-300 to-pink-300"
                                             },
                                             {
                                                 id: 7,
@@ -188,7 +175,7 @@ export default function Dashboard() {
                                                 price: 120.00,
                                                 marketCap: 1200000,
                                                 change24h: 3.2,
-                                                image: "bg-gradient-to-br from-slate-600 to-slate-800"
+                                                image: "bg-gradient-to-br from-purple-800 to-fuchsia-900"
                                             },
                                             {
                                                 id: 9,
@@ -197,7 +184,7 @@ export default function Dashboard() {
                                                 price: 55.50,
                                                 marketCap: 555000,
                                                 change24h: 6.7,
-                                                image: "bg-gradient-to-br from-red-500 to-pink-600"
+                                                image: "bg-gradient-to-br from-rose-500 to-pink-600"
                                             },
                                             {
                                                 id: 10,
@@ -206,7 +193,7 @@ export default function Dashboard() {
                                                 price: 22.00,
                                                 marketCap: 220000,
                                                 change24h: -1.2,
-                                                image: "bg-gradient-to-br from-blue-400 to-indigo-500"
+                                                image: "bg-gradient-to-br from-purple-400 to-pink-500"
                                             }
                                         ].map((item) => (
                                             <tr key={item.id} className="border-b border-white/5 hover:bg-white/5 transition-colors">
@@ -243,23 +230,7 @@ export default function Dashboard() {
                         </GlassCard>
                     </TabsContent>
 
-                    <TabsContent value="loans">
-                        <GlassCard>
-                            <div className="p-4 text-center text-muted-foreground">
-                                <p>You have one active loan.</p>
-                                <div className="mt-4 max-w-md mx-auto">
-                                    <div className="flex justify-between mb-2 text-sm">
-                                        <span>Loan #L-2024-001</span>
-                                        <span>$5,000 / $10,000</span>
-                                    </div>
-                                    <Progress value={50} className="h-2" />
-                                    <div className="mt-4 flex justify-center">
-                                        <Button>Make Payment</Button>
-                                    </div>
-                                </div>
-                            </div>
-                        </GlassCard>
-                    </TabsContent>
+
 
                     <TabsContent value="activity">
                         <GlassCard>

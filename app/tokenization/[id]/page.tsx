@@ -11,6 +11,7 @@ import { Play, Pause, ArrowLeft, Share2, Heart, Clock, DollarSign, TrendingUp, U
 import { useState, use, useEffect } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
+import { StreamingChart } from "@/components/charts/StreamingChart";
 
 // Mock data - in a real app this would come from an API or context
 const mockAssets = [
@@ -22,7 +23,7 @@ const mockAssets = [
         price: 50,
         roi: 12.5,
         funded: 75,
-        image: "bg-gradient-to-br from-purple-500 to-blue-500",
+        image: "bg-gradient-to-br from-purple-500 to-pink-500",
         description: "A synth-pop anthem exploring the mysteries of the night. Luna Eclipse brings her signature ethereal vocals to a driving beat that's sure to be a summer hit.",
         releaseDate: "Oct 15, 2024",
         totalTokens: 10000,
@@ -34,6 +35,12 @@ const mockAssets = [
             { month: "Apr", streams: 22000, spotify: 11000, youtube: 7000, apple: 4000 },
             { month: "May", streams: 25000, spotify: 12500, youtube: 8000, apple: 4500 },
             { month: "Jun", streams: 30000, spotify: 15000, youtube: 10000, apple: 5000 },
+            { month: "Jul", streams: 35000, spotify: 17500, youtube: 11500, apple: 6000 },
+            { month: "Aug", streams: 38000, spotify: 19000, youtube: 12500, apple: 6500 },
+            { month: "Sep", streams: 42000, spotify: 21000, youtube: 14000, apple: 7000 },
+            { month: "Oct", streams: 45000, spotify: 22500, youtube: 15000, apple: 7500 },
+            { month: "Nov", streams: 48000, spotify: 24000, youtube: 16000, apple: 8000 },
+            { month: "Dec", streams: 52000, spotify: 26000, youtube: 17500, apple: 8500 },
         ]
     },
     {
@@ -44,12 +51,25 @@ const mockAssets = [
         price: 35,
         roi: 15.2,
         funded: 40,
-        image: "bg-gradient-to-br from-cyan-500 to-blue-600",
+        image: "bg-gradient-to-br from-fuchsia-600 to-purple-600",
         description: "High-energy electronic track perfectly capturing the vibe of a futuristic metropolis. Heavy basslines and soaring synths make this a club favorite.",
         releaseDate: "Nov 01, 2024",
         totalTokens: 8000,
         availableTokens: 4800,
-        streamingHistory: []
+        streamingHistory: [
+            { month: "Jan", streams: 8000, spotify: 4000, youtube: 3000, apple: 1000 },
+            { month: "Feb", streams: 9500, spotify: 4500, youtube: 3500, apple: 1500 },
+            { month: "Mar", streams: 11000, spotify: 5500, youtube: 4000, apple: 1500 },
+            { month: "Apr", streams: 13000, spotify: 6500, youtube: 4500, apple: 2000 },
+            { month: "May", streams: 16000, spotify: 8000, youtube: 5500, apple: 2500 },
+            { month: "Jun", streams: 18000, spotify: 9000, youtube: 6000, apple: 3000 },
+            { month: "Jul", streams: 20000, spotify: 10000, youtube: 7000, apple: 3000 },
+            { month: "Aug", streams: 22000, spotify: 11000, youtube: 7500, apple: 3500 },
+            { month: "Sep", streams: 25000, spotify: 12500, youtube: 8500, apple: 4000 },
+            { month: "Oct", streams: 28000, spotify: 14000, youtube: 9500, apple: 4500 },
+            { month: "Nov", streams: 30000, spotify: 15000, youtube: 10000, apple: 5000 },
+            { month: "Dec", streams: 35000, spotify: 17500, youtube: 12000, apple: 5500 },
+        ]
     },
     {
         id: 3,
@@ -59,12 +79,25 @@ const mockAssets = [
         price: 25,
         roi: 8.5,
         funded: 90,
-        image: "bg-gradient-to-br from-orange-400 to-red-500",
+        image: "bg-gradient-to-br from-pink-500 to-rose-500",
         description: "Raw, emotional acoustic performance that touches the heart. Sarah's powerful voice shines over a simple guitar arrangement.",
         releaseDate: "Sep 20, 2024",
         totalTokens: 5000,
         availableTokens: 500,
-        streamingHistory: []
+        streamingHistory: [
+            { month: "Jan", streams: 5000, spotify: 2500, youtube: 1500, apple: 1000 },
+            { month: "Feb", streams: 5200, spotify: 2600, youtube: 1600, apple: 1000 },
+            { month: "Mar", streams: 5500, spotify: 2750, youtube: 1750, apple: 1000 },
+            { month: "Apr", streams: 5800, spotify: 2900, youtube: 1900, apple: 1000 },
+            { month: "May", streams: 6000, spotify: 3000, youtube: 2000, apple: 1000 },
+            { month: "Jun", streams: 6500, spotify: 3250, youtube: 2250, apple: 1000 },
+            { month: "Jul", streams: 7000, spotify: 3500, youtube: 2500, apple: 1000 },
+            { month: "Aug", streams: 7500, spotify: 3750, youtube: 2750, apple: 1000 },
+            { month: "Sep", streams: 8000, spotify: 4000, youtube: 3000, apple: 1000 },
+            { month: "Oct", streams: 9000, spotify: 4500, youtube: 3500, apple: 1000 },
+            { month: "Nov", streams: 10000, spotify: 5000, youtube: 4000, apple: 1000 },
+            { month: "Dec", streams: 12000, spotify: 6000, youtube: 4500, apple: 1500 },
+        ]
     },
     // ... add other mock assets if needed to match dashboard list
 ];
@@ -231,39 +264,9 @@ export default function TokenDetail({ params }: { params: Promise<{ id: string }
                                 </div>
                             </div>
 
-                            <div className="h-48 flex items-end justify-between gap-2 px-2">
+                            <div className="h-64 w-full">
                                 {asset.streamingHistory.length > 0 ? (
-                                    asset.streamingHistory.map((data, i) => (
-                                        <div key={i} className="flex flex-col items-center gap-2 flex-1">
-                                            <div className="w-full flex justify-center items-end gap-1 h-full">
-                                                {/* Spotify Bar */}
-                                                <div className="w-2 md:w-4 bg-[#1DB954]/80 hover:bg-[#1DB954] rounded-t-sm transition-all relative group"
-                                                    style={{ height: `${Math.min((data.spotify || 0) / 15000 * 100, 100)}%` }}
-                                                >
-                                                    <div className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black/80 text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-10">
-                                                        {data.spotify?.toLocaleString('en-US')}
-                                                    </div>
-                                                </div>
-                                                {/* YouTube Bar */}
-                                                <div className="w-2 md:w-4 bg-[#FF0000]/80 hover:bg-[#FF0000] rounded-t-sm transition-all relative group"
-                                                    style={{ height: `${Math.min((data.youtube || 0) / 15000 * 100, 100)}%` }}
-                                                >
-                                                    <div className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black/80 text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-10">
-                                                        {data.youtube?.toLocaleString('en-US')}
-                                                    </div>
-                                                </div>
-                                                {/* Apple Music Bar */}
-                                                <div className="w-2 md:w-4 bg-[#FFFFFF]/80 hover:bg-[#FFFFFF] rounded-t-sm transition-all relative group"
-                                                    style={{ height: `${Math.min((data.apple || 0) / 15000 * 100, 100)}%` }}
-                                                >
-                                                    <div className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black/80 text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-10">
-                                                        {data.apple?.toLocaleString('en-US')}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <span className="text-xs text-muted-foreground">{data.month}</span>
-                                        </div>
-                                    ))
+                                    <StreamingChart data={asset.streamingHistory} />
                                 ) : (
                                     <div className="w-full h-full flex items-center justify-center text-muted-foreground">
                                         No streaming data available yet.

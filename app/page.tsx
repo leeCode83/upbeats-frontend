@@ -27,24 +27,28 @@ export default function Home() {
           {/* Background Elements */}
           <HeroBackground />
 
-          <div className="container mx-auto px-4 relative z-10 text-center">
+          <div className="container mx-auto px-4 relative z-10">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
+              className="max-w-4xl"
             >
-              <h1 className="text-5xl md:text-7xl font-bold tracking-tighter mb-6">
+              <h1 className="text-6xl md:text-8xl font-bold tracking-tighter mb-2">
                 The Future of <br />
-                <GradientText>Music Investment</GradientText>
+                Music Investment
               </h1>
-              <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto mb-10">
+              <div className="h-1 w-64 bg-gradient-to-r from-purple-600 to-transparent mb-8 opacity-80" />
+
+              <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mb-10 leading-relaxed">
                 Connect with your favorite artists, invest in their success, and earn royalties through blockchain technology.
               </p>
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                <Button size="lg" className="bg-primary hover:bg-primary/90 text-lg h-12 px-8 rounded-full shadow-lg shadow-primary/25">
+
+              <div className="flex flex-col sm:flex-row items-center gap-4">
+                <Button size="lg" className="bg-gradient-to-r from-purple-600/80 to-purple-900/80 text-lg h-14 px-10 rounded-full font-semibold shadow-lg shadow-primary/25">
                   Start Investing <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
-                <Button size="lg" variant="outline" className="text-lg h-12 px-8 rounded-full border-white/20 hover:bg-white/10">
+                <Button size="lg" variant="outline" className="text-lg h-14 px-10 rounded-full border-white/20 hover:bg-white/10">
                   For Artists
                 </Button>
               </div>
@@ -56,65 +60,110 @@ export default function Home() {
         <ShowcaseGallery />
 
         {/* Features Section */}
-        <section className="py-20 bg-black/20">
+        <section className="py-20 relative">
           <div className="container mx-auto px-4">
-            <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">Why Upbeats?</h2>
-              <p className="text-muted-foreground max-w-xl mx-auto">
+            <div className="text-center mb-16 flex flex-col items-center">
+              <div className="inline-block px-4 py-1.5 rounded-full bg-gradient-to-r from-purple-600/80 to-purple-900/80 text-white text-sm font-medium mb-6 backdrop-blur-sm border border-white/10">
+                Why Choose Us?
+              </div>
+              <h2 className="text-4xl md:text-5xl font-bold mb-6">Why Upbeats?</h2>
+              <p className="text-muted-foreground max-w-xl mx-auto text-lg">
                 We provide a comprehensive ecosystem for artists and fans to grow together.
               </p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {/* Tokenization Card */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.1 }}
+                className="group relative h-[500px] rounded-3xl overflow-hidden bg-neutral-900/50 border border-white/5"
               >
-                <GlassCard hoverEffect className="h-full">
-                  <div className="h-12 w-12 rounded-lg bg-primary/20 flex items-center justify-center mb-6 text-primary">
-                    <Coins size={24} />
+                {/* Image Placeholder */}
+                <img
+                  src="https://images.unsplash.com/photo-1672911640671-65d5dfa97d26?q=80&w=1332&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                  alt="Tokenization"
+                  className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                />
+
+                {/* Content Overlay */}
+                <div className="absolute bottom-4 left-4 right-4">
+                  <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-6 relative overflow-hidden">
+                    <div className="absolute top-0 right-0 p-6 opacity-50">
+                      <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center">
+                        <Coins className="w-6 h-6 text-white" />
+                      </div>
+                    </div>
+                    <h3 className="text-2xl font-bold mb-2 text-white">Tokenization</h3>
+                    <p className="text-gray-300 text-sm leading-relaxed pr-12">
+                      Artists can tokenize their master recordings. Fans buy tokens to own a share of the revenue.
+                    </p>
                   </div>
-                  <h3 className="text-xl font-bold mb-3">Tokenization</h3>
-                  <p className="text-muted-foreground">
-                    Artists can tokenize their master recordings. Fans buy tokens to own a share of the revenue.
-                  </p>
-                </GlassCard>
+                </div>
               </motion.div>
 
+              {/* DeFi Lending Card */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.2 }}
+                className="group relative h-[500px] rounded-3xl overflow-hidden bg-neutral-900/50 border border-white/5"
               >
-                <GlassCard hoverEffect className="h-full">
-                  <div className="h-12 w-12 rounded-lg bg-secondary/20 flex items-center justify-center mb-6 text-secondary">
-                    <TrendingUp size={24} />
+                {/* Image Placeholder */}
+                <img
+                  src="https://plus.unsplash.com/premium_photo-1733342554594-102b8e2d0623?q=80&w=1431&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                  alt="Tokenization"
+                  className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                />
+
+                {/* Content Overlay */}
+                <div className="absolute bottom-4 left-4 right-4">
+                  <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-6 relative overflow-hidden">
+                    <div className="absolute top-0 right-0 p-6 opacity-50">
+                      <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center">
+                        <TrendingUp className="w-6 h-6 text-white" />
+                      </div>
+                    </div>
+                    <h3 className="text-2xl font-bold mb-2 text-white">DeFi Lending</h3>
+                    <p className="text-gray-300 text-sm leading-relaxed pr-12">
+                      Artists can use their future streaming revenue as collateral to get instant loans for production.
+                    </p>
                   </div>
-                  <h3 className="text-xl font-bold mb-3">DeFi Lending</h3>
-                  <p className="text-muted-foreground">
-                    Artists can use their future streaming revenue as collateral to get instant loans for production.
-                  </p>
-                </GlassCard>
+                </div>
               </motion.div>
 
+              {/* Fan Engagement Card */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.3 }}
+                className="group relative h-[500px] rounded-3xl overflow-hidden bg-neutral-900/50 border border-white/5"
               >
-                <GlassCard hoverEffect className="h-full">
-                  <div className="h-12 w-12 rounded-lg bg-accent/20 flex items-center justify-center mb-6 text-accent">
-                    <Users size={24} />
+                {/* Image Placeholder */}
+                <img
+                  src="https://images.unsplash.com/photo-1622675363311-3e1904dc1885?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                  alt="Tokenization"
+                  className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                />
+
+                {/* Content Overlay */}
+                <div className="absolute bottom-4 left-4 right-4">
+                  <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-6 relative overflow-hidden">
+                    <div className="absolute top-0 right-0 p-6 opacity-50">
+                      <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center">
+                        <Users className="w-6 h-6 text-white" />
+                      </div>
+                    </div>
+                    <h3 className="text-2xl font-bold mb-2 text-white">Fan Engagement</h3>
+                    <p className="text-gray-300 text-sm leading-relaxed pr-12">
+                      Token holders get exclusive perks like meet & greets, voting rights, and VIP concert tickets.
+                    </p>
                   </div>
-                  <h3 className="text-xl font-bold mb-3">Fan Engagement</h3>
-                  <p className="text-muted-foreground">
-                    Token holders get exclusive perks like meet & greets, voting rights, and VIP concert tickets.
-                  </p>
-                </GlassCard>
+                </div>
               </motion.div>
             </div>
           </div>

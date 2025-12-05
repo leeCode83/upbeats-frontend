@@ -1,9 +1,10 @@
 "use client";
 
 import { GlassCard } from "@/components/shared/GlassCard";
-import { motion } from "framer-motion";
-import { Music, Trophy } from "lucide-react";
+import { Trophy, Music } from "lucide-react";
 import Image from "next/image";
+import { useEffect, useRef } from "react";
+import { Timeline, set } from "animejs";
 
 const hallOfFameData = [
     {
@@ -11,7 +12,7 @@ const hallOfFameData = [
         title: "Neon Lights",
         artist: "Cyber Punk",
         licenses: 150,
-        image: "https://images.unsplash.com/photo-1514525253440-b393452e8d26?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
+        image: "https://images.unsplash.com/photo-1519608487953-e999c86e7455?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8bmVvbiUyMG5pZ2h0fGVufDB8fDB8fHww",
     },
     {
         id: 2,
@@ -25,69 +26,135 @@ const hallOfFameData = [
         title: "Cosmic Journey",
         artist: "Star Walker",
         licenses: 95,
-        image: "https://images.unsplash.com/photo-1459749411177-287ce14650e7?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
-    },
-    {
-        id: 4,
-        title: "Deep Ocean",
-        artist: "Blue Wave",
-        licenses: 88,
-        image: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
-    },
-    {
-        id: 5,
-        title: "Mountain High",
-        artist: "Peak Performance",
-        licenses: 80,
-        image: "https://images.unsplash.com/photo-1511379938547-c1f69419868d?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
+        image: "https://images.unsplash.com/photo-1444703686981-a3abbc4d4fe3?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8Y29zbWljfGVufDB8fDB8fHww",
     },
 ];
 
 export function HallOfFameCarousel() {
-    return (
-        <div className="w-full overflow-hidden py-10 relative">
-            <div className="absolute inset-y-0 left-0 w-20 bg-gradient-to-r from-background to-transparent z-10" />
-            <div className="absolute inset-y-0 right-0 w-20 bg-gradient-to-l from-background to-transparent z-10" />
+    const containerRef = useRef<HTMLDivElement>(null);
 
-            <div className="flex items-center gap-2 mb-6 px-4">
-                <Trophy className="text-yellow-500" />
-                <h2 className="text-2xl font-bold">Hall of Fame</h2>
+    useEffect(() => {
+        if (!containerRef.current) return;
+
+        // Reset opacity/transform before animating
+        set(".hof-card", { opacity: 0, translateY: 100 });
+
+        const timeline = new Timeline();
+
+        timeline
+            .add(".hof-card-2", { // 2nd place (left)
+                opacity: [0, 1],
+                translateY: [100, 0],
+                duration: 1000,
+                delay: 200,
+                easing: "easeOutElastic(1, .6)",
+            })
+            .add(".hof-card-3", { // 3rd place (right)
+                opacity: [0, 1],
+                translateY: [100, 0],
+                duration: 1000,
+                easing: "easeOutElastic(1, .6)",
+            }, "-=800")
+            .add(".hof-card-1", { // 1st place (center)
+                opacity: [0, 1],
+                translateY: [150, 0], // Comes from further down
+                scale: [0.8, 1.1, 1], // Pop effect
+                duration: 1200,
+                easing: "easeOutElastic(1, .6)",
+            }, "-=800");
+
+    }, []);
+
+    // Reorder for podium: 2nd, 1st, 3rd
+    const podiumOrder = [hallOfFameData[1], hallOfFameData[0], hallOfFameData[2]];
+
+    return (
+        <div className="w-full py-20 relative overflow-hidden" ref={containerRef}>
+            {/* Background Elements */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-primary/10 blur-[100px] rounded-full pointer-events-none" />
+
+            <div className="text-center mb-16 relative z-10">
+                <div className="inline-flex items-center gap-3 bg-white/5 backdrop-blur-sm px-6 py-2 rounded-full border border-white/10 mb-4">
+                    <Trophy className="text-yellow-400 w-5 h-5" />
+                    <span className="text-sm font-medium tracking-wider uppercase text-yellow-400">Top Performers</span>
+                </div>
+                <h2 className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white via-white to-white/60">
+                    Hall of Fame
+                </h2>
             </div>
 
-            <motion.div
-                className="flex gap-6 w-max"
-                animate={{ x: ["0%", "-50%"] }}
-                transition={{
-                    repeat: Infinity,
-                    ease: "linear",
-                    duration: 20,
-                }}
-            >
-                {[...hallOfFameData, ...hallOfFameData].map((item, index) => (
-                    <div key={`${item.id}-${index}`} className="w-[300px]">
-                        <GlassCard hoverEffect className="h-full">
-                            <div className="relative h-40 w-full rounded-lg overflow-hidden mb-4">
-                                <Image
-                                    src={item.image}
-                                    alt={item.title}
-                                    fill
-                                    className="object-cover"
-                                />
-                                <div className="absolute top-2 right-2 bg-black/60 backdrop-blur-md px-2 py-1 rounded-full text-xs font-bold text-yellow-400 flex items-center gap-1">
-                                    <Trophy size={12} />
-                                    #{index % 5 + 1}
-                                </div>
+            <div className="container mx-auto px-4">
+                <div className="flex flex-col md:flex-row items-end justify-center gap-8 md:gap-4 lg:gap-8 h-[500px] md:h-auto">
+                    {podiumOrder.map((item, index) => {
+                        // Determine rank based on original data index
+                        const rank = item.id; // 1, 2, or 3
+                        let podiumClass = "";
+                        let heightClass = "";
+                        let orderClass = "";
+                        let colorClass = "";
+
+                        if (rank === 1) {
+                            podiumClass = "hof-card-1 z-20 md:-mt-12 mb-12 md:mb-0 order-1 md:order-2";
+                            heightClass = "md:w-[380px] md:h-[480px]";
+                            colorClass = "text-yellow-400 border-yellow-400/50 shadow-[0_0_30px_-5px_rgba(250,204,21,0.3)]";
+                        } else if (rank === 2) {
+                            podiumClass = "hof-card-2 z-10 order-2 md:order-1";
+                            heightClass = "md:w-[320px] md:h-[400px]";
+                            colorClass = "text-gray-300 border-gray-300/50";
+                        } else {
+                            podiumClass = "hof-card-3 z-10 order-3 md:order-3";
+                            heightClass = "md:w-[320px] md:h-[400px]";
+                            colorClass = "text-amber-700 border-amber-700/50";
+                        }
+
+                        return (
+                            <div key={item.id} className={`hof-card ${podiumClass} relative group w-full max-w-[320px] md:max-w-none`}>
+                                <GlassCard
+                                    className={`h-full flex flex-col relative overflow-hidden transition-all duration-300 ${rank === 1 ? 'border-primary/50' : ''}`}
+                                    hoverEffect={false} // We'll handle hover manually or via CSS
+                                >
+                                    {/* Rank Badge */}
+                                    <div className={`absolute top-4 left-4 z-20 w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg bg-black/60 backdrop-blur-md border ${colorClass}`}>
+                                        {rank}
+                                    </div>
+
+                                    {/* Image */}
+                                    <div className={`relative w-full ${rank === 1 ? 'h-64' : 'h-48'} overflow-hidden rounded-t-xl`}>
+                                        <Image
+                                            src={item.image}
+                                            alt={item.title}
+                                            fill
+                                            className="object-cover transition-transform duration-700 group-hover:scale-110"
+                                        />
+                                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-80" />
+                                    </div>
+
+                                    {/* Content */}
+                                    <div className="p-6 flex-grow flex flex-col justify-end relative">
+                                        <h3 className={`font-bold ${rank === 1 ? 'text-2xl' : 'text-xl'} mb-1`}>{item.title}</h3>
+                                        <p className="text-muted-foreground mb-4 flex items-center gap-2">
+                                            <Music size={14} />
+                                            {item.artist}
+                                        </p>
+
+                                        <div className="mt-auto pt-4 border-t border-white/10 flex items-center justify-between">
+                                            <span className="text-xs uppercase tracking-wider text-muted-foreground">Total Licenses</span>
+                                            <span className={`font-bold text-xl ${rank === 1 ? 'text-primary' : 'text-white'}`}>
+                                                {item.licenses}
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    {/* Glow Effect for #1 */}
+                                    {rank === 1 && (
+                                        <div className="absolute inset-0 border-2 border-primary/30 rounded-xl pointer-events-none animate-pulse" />
+                                    )}
+                                </GlassCard>
                             </div>
-                            <h3 className="font-bold text-lg truncate">{item.title}</h3>
-                            <p className="text-muted-foreground text-sm mb-2">{item.artist}</p>
-                            <div className="flex items-center justify-between text-sm">
-                                <span className="text-muted-foreground">Sync Licenses</span>
-                                <span className="font-bold text-primary">{item.licenses}</span>
-                            </div>
-                        </GlassCard>
-                    </div>
-                ))}
-            </motion.div>
+                        );
+                    })}
+                </div>
+            </div>
         </div>
     );
 }

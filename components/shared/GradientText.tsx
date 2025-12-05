@@ -10,7 +10,7 @@ export function GradientText({ children, className, ...props }: GradientTextProp
     return (
         <span
             className={cn(
-                "bg-clip-text text-transparent bg-gradient-to-r from-primary via-accent to-secondary animate-gradient-x",
+                "bg-clip-text text-transparent bg-gradient-to-r from-purple-500 via-fuchsia-500 to-pink-500 animate-gradient-x",
                 className
             )}
             {...props}
