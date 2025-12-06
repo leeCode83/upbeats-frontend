@@ -14,7 +14,8 @@ const navItems = [
     { name: "Sync Catalog", href: "/sync-catalog" },
     { name: "Token Market", href: "/tokenization" },
     { name: "Tokenize", href: "/tokenization/create" },
-    { name: "About", href: "/about" }
+    { name: "About", href: "/about" },
+    { name: "Dashboard", href: "/dashboard" },
 ];
 
 export function Navbar() {
@@ -70,11 +71,11 @@ export function Navbar() {
 
                 {/* Auth Buttons */}
                 <div className="hidden md:flex items-center space-x-3 shrink-0">
-                    <Link href="/dashboard">
+                    {/* <Link href="/dashboard">
                         <Button suppressHydrationWarning={true} variant="ghost" className="rounded-full text-muted-foreground hover:text-white hover:bg-white/5">
                             Dashboard
                         </Button>
-                    </Link>
+                    </Link> */}
                     <ConnectButton.Custom>
                         {({
                             account,

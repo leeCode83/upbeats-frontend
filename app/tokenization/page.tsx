@@ -11,6 +11,8 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Search, Filter, Play, Pause } from "lucide-react";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { motion } from "framer-motion";
 
 const mockAssets = [
     {
@@ -83,6 +85,7 @@ const mockAssets = [
 
 export default function Tokenization() {
     const [playing, setPlaying] = useState<number | null>(null);
+    const router = useRouter();
 
     return (
         <div className="min-h-screen flex flex-col bg-background text-foreground">
@@ -132,8 +135,16 @@ export default function Tokenization() {
                                 </tr>
                             </thead>
                             <tbody>
-                                {mockAssets.map((asset) => (
-                                    <tr key={asset.id} className="border-b border-white/5 hover:bg-white/5 transition-colors">
+                                {mockAssets.map((asset, index) => (
+                                    <motion.tr
+                                        key={asset.id}
+                                        initial={{ opacity: 0, y: 20 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ duration: 0.3, delay: index * 0.1 }}
+                                        whileHover={{ backgroundColor: "rgba(255, 255, 255, 0.05)" }}
+                                        className="border-b border-white/5 cursor-pointer relative"
+                                        onClick={() => router.push(`/tokenization/${asset.id}`)}
+                                    >
                                         <td className="p-4">
                                             <div className="flex items-center gap-3">
                                                 <div className={`h-10 w-10 rounded-full ${asset.image} flex items-center justify-center text-xs font-bold`}>
@@ -161,11 +172,13 @@ export default function Tokenization() {
                                             </div>
                                         </td>
                                         <td className="p-4 text-right">
-                                            <Link href={`/tokenization/${asset.id}`}>
-                                                <Button variant="ghost" size="sm">Detail</Button>
-                                            </Link>
+                                            {/* Stop propagation so clicking the button doesn't trigger the row click twice if wired up, though here it's fine. 
+                                                Actually, adding Link back makes the button work independently even if row fails. */}
+                                            <Button asChild variant="ghost" size="sm">
+                                                <Link href={`/tokenization/${asset.id}`} onClick={(e) => e.stopPropagation()}>Detail</Link>
+                                            </Button>
                                         </td>
-                                    </tr>
+                                    </motion.tr>
                                 ))}
                             </tbody>
                         </table>

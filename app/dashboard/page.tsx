@@ -218,9 +218,9 @@ export default function Dashboard() {
                                                     ${item.marketCap.toLocaleString('en-US')}
                                                 </td>
                                                 <td className="p-4 text-right">
-                                                    <Link href={`/tokenization/${item.id}`}>
-                                                        <Button variant="ghost" size="sm">Detail</Button>
-                                                    </Link>
+                                                    <Button asChild variant="ghost" size="sm">
+                                                        <Link href={`/tokenization/${item.id}`}>Detail</Link>
+                                                    </Button>
                                                 </td>
                                             </tr>
                                         ))}
