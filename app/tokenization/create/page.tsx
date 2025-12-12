@@ -10,8 +10,12 @@ import { SimpleTooltip } from "@/components/shared/SimpleTooltip";
 import { Info, Upload, CheckCircle, ArrowRight, ArrowLeft, Music, DollarSign, FileText } from "lucide-react";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
+import { useRouter } from "next/navigation";
 
 export default function CreateTokenizationPage() {
+    const router = useRouter();
+    const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
     const [step, setStep] = useState(1);
     const [formData, setFormData] = useState({
         title: "",
@@ -333,12 +337,37 @@ export default function CreateTokenizationPage() {
                                     Next Step <ArrowRight size={16} />
                                 </Button>
                             ) : (
-                                <Button className="gap-2 bg-gradient-to-r from-primary to-purple-600 hover:opacity-90">
+                                <Button
+                                    onClick={() => setIsSuccessModalOpen(true)}
+                                    className="gap-2 bg-gradient-to-r from-primary to-purple-600 hover:opacity-90"
+                                >
                                     Submit Proposal <CheckCircle size={16} />
                                 </Button>
                             )}
                         </div>
                     </GlassCard>
+
+                    <Dialog open={isSuccessModalOpen} onOpenChange={setIsSuccessModalOpen}>
+                        <DialogContent className="sm:max-w-md bg-zinc-900 border-white/10 text-white">
+                            <DialogHeader>
+                                <DialogTitle className="flex items-center gap-2 text-xl">
+                                    <CheckCircle className="text-green-500" size={24} />
+                                    Proposal Submitted Successfully
+                                </DialogTitle>
+                                <DialogDescription className="text-zinc-400 pt-2">
+                                    Your tokenization proposal has been received. We will process your submission within a maximum of <strong>2 business days</strong>.
+                                </DialogDescription>
+                            </DialogHeader>
+                            <DialogFooter className="sm:justify-start mt-4">
+                                <Button
+                                    className="w-full bg-primary hover:bg-primary/90"
+                                    onClick={() => router.push("/dashboard")}
+                                >
+                                    Go to Dashboard
+                                </Button>
+                            </DialogFooter>
+                        </DialogContent>
+                    </Dialog>
                 </div>
             </main>
             <Footer />

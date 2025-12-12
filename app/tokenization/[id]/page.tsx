@@ -10,8 +10,20 @@ import { Progress } from "@/components/ui/progress";
 import { Play, Pause, ArrowLeft, Share2, Heart, Clock, DollarSign, TrendingUp, Users } from "lucide-react";
 import { useState, use, useEffect } from "react";
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { StreamingChart } from "@/components/charts/StreamingChart";
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+    DialogFooter,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Slider } from "@/components/ui/slider";
 
 // Mock data - in a real app this would come from an API or context
 const mockAssets = [
@@ -109,6 +121,25 @@ export default function TokenDetail({ params }: { params: Promise<{ id: string }
     const asset = mockAssets.find(a => a.id === id) || mockAssets[0]; // Fallback to first asset if not found
     const [playing, setPlaying] = useState(false);
     const [progress, setProgress] = useState(0);
+
+    const router = useRouter();
+    const [isBuyModalOpen, setIsBuyModalOpen] = useState(false);
+    const [buyAmount, setBuyAmount] = useState(10); // Default to 10 tokens
+    const [isProcessing, setIsProcessing] = useState(false);
+
+    const totalCost = buyAmount * asset.price;
+
+    const handleBuy = async () => {
+        setIsProcessing(true);
+        // Simulate API Processing
+        await new Promise(resolve => setTimeout(resolve, 1500));
+
+        setIsProcessing(false);
+        setIsBuyModalOpen(false);
+        // Alert is used here as a placeholder for a Toast notification since no Toast component was found in components/ui
+        alert(`Successfully purchased ${buyAmount} tokens for $${totalCost.toLocaleString()}!`);
+        router.push("/tokenization");
+    };
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -234,8 +265,73 @@ export default function TokenDetail({ params }: { params: Promise<{ id: string }
                                 <div className="pt-6 border-t border-white/10">
                                     <h3 className="font-bold mb-4">Invest Now</h3>
                                     <div className="flex gap-4">
-                                        <Button className="flex-1 bg-primary hover:bg-primary/90 h-12 text-lg">
-                                            Buy Tokens
+                                        <Button className="flex-1 bg-primary hover:bg-primary/90 h-12 text-lg" asChild>
+                                            <Dialog open={isBuyModalOpen} onOpenChange={setIsBuyModalOpen}>
+                                                <DialogTrigger asChild>
+                                                    <Button className="flex-1 bg-primary hover:bg-primary/90 h-12 text-lg">
+                                                        Buy Tokens
+                                                    </Button>
+                                                </DialogTrigger>
+                                                <DialogContent className="sm:max-w-[425px] bg-background/95 backdrop-blur-xl border-white/10 text-foreground">
+                                                    <DialogHeader>
+                                                        <DialogTitle>Buy Tokens: {asset.title}</DialogTitle>
+                                                        <DialogDescription>
+                                                            Invest in this asset to earn future royalties.
+                                                        </DialogDescription>
+                                                    </DialogHeader>
+                                                    <div className="grid gap-6 py-4">
+                                                        <div className="grid gap-2">
+                                                            <Label htmlFor="amount">Number of Tokens</Label>
+                                                            <div className="flex items-center gap-4">
+                                                                <Input
+                                                                    id="amount"
+                                                                    type="number"
+                                                                    value={buyAmount}
+                                                                    onChange={(e) => setBuyAmount(Number(e.target.value))}
+                                                                    className="bg-white/5 border-white/10"
+                                                                    min={1}
+                                                                    max={asset.availableTokens}
+                                                                />
+                                                                <span className="text-sm text-muted-foreground whitespace-nowrap">
+                                                                    Max: {asset.availableTokens}
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                        <div className="grid gap-2">
+                                                            <Slider
+                                                                value={[buyAmount]}
+                                                                onValueChange={(vals) => setBuyAmount(vals[0])}
+                                                                max={asset.availableTokens}
+                                                                step={1}
+                                                                className="py-4"
+                                                            />
+                                                        </div>
+                                                        <div className="bg-white/5 p-4 rounded-lg space-y-2">
+                                                            <div className="flex justify-between text-sm">
+                                                                <span className="text-muted-foreground">Price per Token</span>
+                                                                <span>${asset.price.toLocaleString()}</span>
+                                                            </div>
+                                                            <div className="flex justify-between text-sm">
+                                                                <span className="text-muted-foreground">Quantity</span>
+                                                                <span>{buyAmount}</span>
+                                                            </div>
+                                                            <div className="border-t border-white/10 my-2 pt-2 flex justify-between font-bold text-lg">
+                                                                <span>Total Cost</span>
+                                                                <span className="text-green-400">${totalCost.toLocaleString()} USDT</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <DialogFooter>
+                                                        <Button
+                                                            onClick={handleBuy}
+                                                            disabled={isProcessing || buyAmount <= 0}
+                                                            className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
+                                                        >
+                                                            {isProcessing ? "Processing..." : "Confirm Purchase"}
+                                                        </Button>
+                                                    </DialogFooter>
+                                                </DialogContent>
+                                            </Dialog>
                                         </Button>
                                         <Button variant="outline" className="flex-1 border-white/10 h-12 text-lg">
                                             View Contract

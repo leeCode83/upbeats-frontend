@@ -1,36 +1,73 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Upbeats - The Future of Music Investment
+
+![Upbeats Platform Flow](https://www.upbeats.finance/logo.png) <!-- Placeholder for valid project header if needed, but the diagram is below -->
+
+## Executive Summary
+**Upbeats** is a decentralized music investment platform that bridges the gap between independent artists and their fans. By leveraging blockchain technology, Upbeats allows artists to **tokenize their master recordings**, turning songs into investable digital assets. 
+
+Artists get instant funding for their projects without signing away their creative control to traditional labels. Fans and investors can buy shares (tokens) of their favorite songs, earning a portion of the streaming royalties as the music succeeds. Upbeats democratizes the music industry, creating a symbiotic ecosystem where artists and fans grow together.
+
+## Platform Flow
+![Platform Flow](/C:/Users/Leandro/.gemini/antigravity/brain/03d407bd-1781-485d-9551-8a83a21d774e/upbeats_platform_flow_1765523757551.png)
+
+1.  **Artist** uploads music and legal documentation to Upbeats.
+2.  **Smart Contracts** tokenize the asset into fractional ERC20 tokens.
+3.  **Investors/Fans** purchase these tokens using cryptocurrency.
+4.  **Automatic Distribution**: Funds go directly to the artist for production/marketing.
+5.  **Royalties**: As the song generates revenue, smart contracts distribute royalties back to token holders.
+
+## Key Features
+
+### 1. Music Tokenization (Initial Song Offering)
+*   Artists can mint ERC20 tokens representing ownership shares of their tracks.
+*   Customizable parameters: Percentage of rights to sell, total valuation, and fundraising goals.
+*   Secure legal binding via embedded metadata and terms.
+
+### 2. Sync Catalog Marketplace
+*   A premium marketplace for licensing master recordings for film, TV, and ads.
+*   **Direct Licensing**: Buyers can purchase "Perpetual" licenses instantly via smart contracts.
+*   **Transparent Pricing**: Clear, upfront costs for different usage types (Commercial, Film, etc.).
+
+### 3. DeFi Lending for Artists
+*   **Collateralized Loans**: Artists can use their future streaming revenue or unsold tokens as collateral.
+*   **Instant Liquidity**: Get access to capital without selling permanent equity.
+*   **Algorithmic Risk Assessment**: Borrowing limits based on historical streaming data.
+
+### 4. Fan Engagement & Governance
+*   Token holders gain access to exclusive perks (VIP tickets, meet & greets).
+*   **DAO Voting**: Fans can vote on key decisions, such as which singles to release next or tour locations.
+
+## Business Model
+
+Upbeats operates on a sustainable transaction-based model:
+*   **Tokenization Fee**: A small percentage (e.g., 2-5%) of the funds raised during the Initial Song Offering.
+*   **Marketplace Commission**: A transaction fee on secondary market trades and Sync Catalog license purchases.
+*   **Lending Interest**: Interest gathered from DeFi loans provided to artists.
+
+## Challenges & Solutions
+
+| Challenge | Solution |
+| :--- | :--- |
+| **Liquidity** | Selling niche music tokens can be slow. Upbeats implements **Automated Market Makers (AMMs)** (future roadmap) to ensure constant liquidity for trading tokens. |
+| **Copyright Verification** | Preventing fraud is critical. We use a rigorous **KYC/KYB** process and manual verification of ownership documents before allowing tokenization. |
+| **Regulatory Compliance** | Securities laws vary globally. Our token structure is designed to be compliant, focusing on revenue sharing rights rather than equity in a company. |
+| **User Onboarding** | Crypto can be confusing. We provide a **seamless UI** that abstracts wallet complexity, offering familiar "Web2-style" experiences (like the simple purchase modal). |
+
+---
+
+## Technical Stack
+*   **Frontend**: Next.js 16 (Turbopack), React 19, TailwindCSS, Framer Motion.
+*   **Smart Contracts**: Solidity (ERC20, Factory Pattern), OpenZeppelin.
+*   **Blockchain**: Ethereum / Polygon (assumed for low fees).
+
+## Deployed Contracts
+
+| Network | Contract Name | Address |
+| :--- | :--- | :--- |
+| **Story Aeneid Testnet** | MusicPlatform | `0x857a7a0929DDbFc9433aFEa3EF103a04B4dA2e2A` |
 
 ## Getting Started
 
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1.  **Install Dependencies**: `npm install`
+2.  **Run Development Server**: `npm run dev`
+3.  **Build for Production**: `npm run build`

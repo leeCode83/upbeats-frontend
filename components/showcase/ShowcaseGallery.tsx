@@ -69,6 +69,7 @@ export function ShowcaseGallery() {
 
     const [expandedId, setExpandedId] = useState<number | null>(null);
 
+    // Initial ScrollTrigger setup
     useGSAP(() => {
         const pin = gsap.fromTo(
             sectionRef.current,
@@ -92,16 +93,67 @@ export function ShowcaseGallery() {
         return () => {
             pin.kill();
         };
-    }, { scope: containerRef }); // Removed expandedId dependency to prevent resetting scroll position
+    }, { scope: containerRef });
 
-    // Refresh ScrollTrigger when expansion changes to recalculate widths
-    useEffect(() => {
-        // Allow DOM to update first
-        const timer = setTimeout(() => {
-            ScrollTrigger.refresh();
-        }, 100);
-        return () => clearTimeout(timer);
-    }, [expandedId]);
+    // Handle Card Expansion Animation
+    useGSAP(() => {
+        // Animate all cards based on state
+        projects.forEach((project) => {
+            const isExpanded = expandedId === project.id;
+            const cardSelector = `.card-${project.id}`;
+            const imageSelector = `.image-${project.id}`;
+            const overlaySelector = `.overlay-${project.id}`;
+            const titleSelector = `.title-${project.id}`;
+            const detailsSelector = `.details-${project.id}`;
+
+            // Card Width
+            gsap.to(cardSelector, {
+                width: isExpanded ? "60vw" : "20vw",
+                duration: 1,
+                ease: "power3.inOut",
+                onUpdate: () => ScrollTrigger.refresh() // Refresh scroll calculation during animation
+            });
+
+            // Image Scale
+            gsap.to(imageSelector, {
+                scale: isExpanded ? 1 : 1.1,
+                duration: 1,
+                ease: "power3.inOut"
+            });
+
+            // Overlay Opacity
+            gsap.to(overlaySelector, {
+                opacity: isExpanded ? 0.2 : 0.4,
+                duration: 1,
+                ease: "power3.inOut"
+            });
+
+            // Title Size & Position
+            // Note: className toggling is handled by React, but we can animate properties if needed.
+            // For font-size, standard CSS transition is often smoother as it triggers layout reflow,
+            // but GSAP can handle it too. Here we stick to width/scale primarily for performance.
+
+            // Details Section
+            if (isExpanded) {
+                gsap.to(detailsSelector, {
+                    height: "auto",
+                    opacity: 1,
+                    marginTop: "1.5rem",
+                    duration: 1,
+                    ease: "power3.inOut"
+                });
+            } else {
+                gsap.to(detailsSelector, {
+                    height: 0,
+                    opacity: 0,
+                    marginTop: 0,
+                    duration: 1,
+                    ease: "power3.inOut"
+                });
+            }
+        });
+
+    }, { dependencies: [expandedId], scope: sectionRef });
 
     const handleCardClick = (id: number) => {
         setExpandedId(expandedId === id ? null : id);
@@ -128,37 +180,30 @@ export function ShowcaseGallery() {
                         <div
                             key={project.id}
                             onClick={() => handleCardClick(project.id)}
-                            className={`relative h-[60vh] rounded-3xl overflow-hidden cursor-pointer transition-all duration-700 ease-[0.16,1,0.3,1] shrink-0 border border-white/10 ${expandedId === project.id ? "w-[60vw]" : "w-[20vw]"
-                                }`}
+                            className={`card-${project.id} relative h-[60vh] rounded-3xl overflow-hidden cursor-pointer shrink-0 border border-white/10`}
+                            style={{ width: "20vw" }} // Initial width handled by GSAP mostly, but safe default
                         >
                             {/* Background Image */}
                             <div className="absolute inset-0 w-full h-full">
                                 <img
                                     src={project.image}
                                     alt={project.title}
-                                    className={`w-full h-full object-cover transition-transform duration-700 ${expandedId === project.id ? "scale-100" : "scale-110"
-                                        }`}
+                                    className={`image-${project.id} w-full h-full object-cover scale-110`}
                                 />
-                                <div className={`absolute inset-0 bg-black/40 transition-opacity duration-500 ${expandedId === project.id ? "opacity-20" : "opacity-40 hover:opacity-30"
-                                    }`} />
+                                <div className={`overlay-${project.id} absolute inset-0 bg-black/40`} />
                             </div>
 
                             {/* Content */}
                             <div className="absolute inset-0 flex flex-col justify-end p-8">
-                                <div className={`transition-all duration-500 ${expandedId === project.id ? "translate-y-0" : "translate-y-0"
-                                    }`}>
-                                    <h3 className={`font-bold mb-1 leading-tight transition-all duration-500 ${expandedId === project.id ? "text-4xl" : "text-2xl"
-                                        }`}>
+                                <div>
+                                    <h3 className={`title-${project.id} font-bold mb-1 leading-tight ${expandedId === project.id ? "text-4xl" : "text-2xl"}`}>
                                         {project.title}
                                     </h3>
                                     <p className="text-lg text-gray-300 font-medium">{project.artist}</p>
 
                                     {/* Expanded Details */}
-                                    <div className={`grid transition-all duration-500 ease-in-out overflow-hidden ${expandedId === project.id
-                                            ? "grid-rows-[1fr] opacity-100 mt-6"
-                                            : "grid-rows-[0fr] opacity-0 mt-0"
-                                        }`}>
-                                        <div className="min-h-0">
+                                    <div className={`details-${project.id} overflow-hidden h-0 opacity-0`}>
+                                        <div className="min-h-0 pt-2">
                                             <div className="flex flex-wrap gap-3 mb-6">
                                                 <span className="px-3 py-1 bg-white/20 backdrop-blur-md rounded-full text-xs font-medium tracking-wide uppercase">
                                                     {project.genre}

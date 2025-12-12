@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ArrowUpRight, DollarSign, Music, Wallet } from "lucide-react";
+import { ArrowUpRight, Disc, DollarSign, Music, Wallet } from "lucide-react";
 
 export default function Dashboard() {
     return (
@@ -70,6 +70,19 @@ export default function Dashboard() {
                         </div>
                         <p className="text-sm text-muted-foreground mb-1">Total Earnings</p>
                         <h3 className="text-2xl font-bold">$450.25</h3>
+                    </GlassCard>
+
+                    <GlassCard>
+                        <div className="flex justify-between items-start mb-4">
+                            <div className="p-2 bg-pink-500/20 rounded-lg text-pink-500">
+                                <Disc size={20} />
+                            </div>
+                            <span className="text-xs font-medium text-green-400 flex items-center">
+                                +8.5% <ArrowUpRight size={12} className="ml-1" />
+                            </span>
+                        </div>
+                        <p className="text-sm text-muted-foreground mb-1">Tokenized Works</p>
+                        <h3 className="text-2xl font-bold">10</h3>
                     </GlassCard>
 
 

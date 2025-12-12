@@ -1,9 +1,12 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Play, Pause, ShoppingCart } from "lucide-react";
+import { Play, Pause, ShoppingCart, Clock, Target, CheckCircle, Info } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 const recordingsData = [
     {
@@ -64,6 +67,10 @@ const recordingsData = [
 
 export function MasterRecordingList() {
     const [playing, setPlaying] = useState<number | null>(null);
+    const [selectedRecording, setSelectedRecording] = useState<typeof recordingsData[0] | null>(null);
+    const [isPurchaseModalOpen, setIsPurchaseModalOpen] = useState(false);
+    const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+    const [purchasePurpose, setPurchasePurpose] = useState("");
 
     const togglePlay = (id: number) => {
         if (playing === id) {
@@ -71,6 +78,22 @@ export function MasterRecordingList() {
         } else {
             setPlaying(id);
         }
+    };
+
+    const handlePurchaseClick = (recording: typeof recordingsData[0]) => {
+        setSelectedRecording(recording);
+        setIsPurchaseModalOpen(true);
+    };
+
+    const confirmPurchase = () => {
+        setIsPurchaseModalOpen(false);
+        setIsSuccessModalOpen(true);
+    };
+
+    const closeSuccessModal = () => {
+        setIsSuccessModalOpen(false);
+        setPurchasePurpose(""); // Reset form
+        setSelectedRecording(null);
     };
 
     return (
@@ -125,13 +148,89 @@ export function MasterRecordingList() {
                         {/* Price & Action Column */}
                         <div className="text-right w-32 flex items-center justify-end gap-4">
                             <span className="font-bold text-primary">{item.price}</span>
-                            <Button size="sm" variant="ghost" className="h-8 w-8 p-0 rounded-full hover:bg-primary hover:text-white">
+                            <Button
+                                size="sm"
+                                variant="ghost"
+                                className="h-8 w-8 p-0 rounded-full hover:bg-primary hover:text-white"
+                                onClick={() => handlePurchaseClick(item)}
+                            >
                                 <ShoppingCart size={16} />
                             </Button>
                         </div>
                     </div>
                 ))}
             </div>
+
+            {/* Purchase Confirmation Modal */}
+            <Dialog open={isPurchaseModalOpen} onOpenChange={setIsPurchaseModalOpen}>
+                <DialogContent className="sm:max-w-md bg-zinc-900 border-white/10 text-white">
+                    <DialogHeader>
+                        <DialogTitle>Complete Purchase</DialogTitle>
+                        <DialogDescription className="text-zinc-400">
+                            Review the license details for <strong>{selectedRecording?.title}</strong>.
+                        </DialogDescription>
+                    </DialogHeader>
+
+                    <div className="space-y-4 py-4">
+                        <div className="flex items-center justify-between p-3 bg-white/5 rounded-lg">
+                            <span className="text-muted-foreground">Price</span>
+                            <span className="font-bold text-xl text-primary">{selectedRecording?.price}</span>
+                        </div>
+
+                        <div className="space-y-2">
+                            <div className="flex items-center gap-2 text-sm font-medium">
+                                <Clock size={16} className="text-primary" />
+                                <span>License Validity</span>
+                            </div>
+                            <div className="p-3 bg-white/5 rounded-lg text-sm text-zinc-300 border border-white/5">
+                                Perpetual (Lifetime)
+                            </div>
+                        </div>
+
+                        <div className="space-y-2">
+                            <div className="flex items-center gap-2 text-sm font-medium">
+                                <Target size={16} className="text-primary" />
+                                <Label htmlFor="purpose">Usage Purpose</Label>
+                            </div>
+                            <Input
+                                id="purpose"
+                                placeholder="e.g. Commercial, YouTube Video, Film"
+                                className="bg-white/5 border-white/10"
+                                value={purchasePurpose}
+                                onChange={(e) => setPurchasePurpose(e.target.value)}
+                            />
+                        </div>
+                    </div>
+
+                    <DialogFooter>
+                        <Button variant="outline" onClick={() => setIsPurchaseModalOpen(false)} className="border-white/10 hover:bg-white/10 text-white">Cancel</Button>
+                        <Button onClick={confirmPurchase} className="bg-primary hover:bg-primary/90">Confirm Purchase</Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
+
+            {/* Success Modal */}
+            <Dialog open={isSuccessModalOpen} onOpenChange={setIsSuccessModalOpen}>
+                <DialogContent className="sm:max-w-md bg-zinc-900 border-white/10 text-white">
+                    <DialogHeader>
+                        <DialogTitle className="flex items-center gap-2">
+                            <CheckCircle className="text-green-500" size={24} />
+                            Transaction Successful
+                        </DialogTitle>
+                        <DialogDescription className="text-zinc-400 pt-2">
+                            You have successfully purchased the license for <strong>{selectedRecording?.title}</strong>.
+                        </DialogDescription>
+                    </DialogHeader>
+                    <DialogFooter>
+                        <Button
+                            className="w-full bg-primary hover:bg-primary/90"
+                            onClick={closeSuccessModal}
+                        >
+                            Return to Catalog
+                        </Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
         </div>
     );
 }
