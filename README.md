@@ -1,14 +1,12 @@
 # Upbeats - The Future of Music Investment
 
-![Upbeats Platform Flow](https://www.upbeats.finance/logo.png) <!-- Placeholder for valid project header if needed, but the diagram is below -->
-
 ## Executive Summary
 **Upbeats** is a decentralized music investment platform that bridges the gap between independent artists and their fans. By leveraging blockchain technology, Upbeats allows artists to **tokenize their master recordings**, turning songs into investable digital assets. 
 
 Artists get instant funding for their projects without signing away their creative control to traditional labels. Fans and investors can buy shares (tokens) of their favorite songs, earning a portion of the streaming royalties as the music succeeds. Upbeats democratizes the music industry, creating a symbiotic ecosystem where artists and fans grow together.
 
 ## Platform Flow
-![Platform Flow](/C:/Users/Leandro/.gemini/antigravity/brain/03d407bd-1781-485d-9551-8a83a21d774e/upbeats_platform_flow_1765523757551.png)
+![Platform Flow](/images/upbeats_platform_flow.png)
 
 1.  **Artist** uploads music and legal documentation to Upbeats.
 2.  **Smart Contracts** tokenize the asset into fractional ERC20 tokens.
@@ -58,7 +56,7 @@ Upbeats operates on a sustainable transaction-based model:
 ## Technical Stack
 *   **Frontend**: Next.js 16 (Turbopack), React 19, TailwindCSS, Framer Motion.
 *   **Smart Contracts**: Solidity (ERC20, Factory Pattern), OpenZeppelin.
-*   **Blockchain**: Ethereum / Polygon (assumed for low fees).
+*   **Blockchain**: Story Aeneid Testnet.
 
 ## Deployed Contracts
 
