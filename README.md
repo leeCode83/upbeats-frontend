@@ -6,7 +6,7 @@
 Artists get instant funding for their projects without signing away their creative control to traditional labels. Fans and investors can buy shares (tokens) of their favorite songs, earning a portion of the streaming royalties as the music succeeds. Upbeats democratizes the music industry, creating a symbiotic ecosystem where artists and fans grow together.
 
 ## Platform Flow
-![Platform Flow](/images/upbeats_platform_flow.png)
+![Platform Flow](public/images/upbeats_platform_flow.png)
 
 1.  **Artist** uploads music and legal documentation to Upbeats.
 2.  **Smart Contracts** tokenize the asset into fractional ERC20 tokens.
